@@ -238,12 +238,14 @@ class BybitPaperAdapter(BaseAdapter):
         current_price = ticker.get('last', 0) or ticker.get('ask', 0)
 
         # Determine fill price
+        fill_price = current_price
         if order_type == OrderType.MARKET:
             fill_price = current_price
-        else:
-            fill_price = price or current_price
+        elif price is not None:
+            fill_price = price
 
-        # Create paper order
+        # Create paper order - LIMIT orders start as PENDING (not filled)
+        # They will be filled when price conditions are met or can be cancelled
         paper_order = PaperOrder(
             order_id=order_id,
             symbol=symbol,
@@ -251,8 +253,8 @@ class BybitPaperAdapter(BaseAdapter):
             order_type=order_type,
             quantity=quantity,
             price=price,
-            status=OrderStatus.FILLED,
-            filled_qty=quantity,
+            status=OrderStatus.PENDING,  # LIMITS start pending, not filled
+            filled_qty=0.0,
             avg_fill_price=fill_price,
             created_at=datetime.now(),
             updated_at=datetime.now(),
@@ -261,8 +263,12 @@ class BybitPaperAdapter(BaseAdapter):
         # Store order
         self._orders[order_id] = paper_order
 
-        # Execute the trade
-        self._execute_trade(symbol, side, quantity, fill_price)
+        # For MARKET orders, execute immediately. LIMIT orders wait for fill conditions.
+        if order_type == OrderType.MARKET:
+            paper_order.status = OrderStatus.FILLED
+            paper_order.filled_qty = quantity
+            # Execute the trade
+            self._execute_trade(symbol, side, quantity, fill_price)
 
         # Notify callbacks
         for cb in self._order_callbacks:
