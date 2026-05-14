@@ -19,13 +19,17 @@ class BybitLiveAdapter:
         self.testnet = testnet
         self.exchange = ccxt.bybit({
             'enableRateLimit': True,
-            'options': {'defaultType': 'spot'},
+            'options': {
+                'defaultType': 'spot',
+                'testnet': testnet,
+            },
         })
         self._running = False
         self._price_callbacks: List[Callable[[str, float], None]] = []
         self._orderbook_callbacks: List[Callable[[str, Dict[str, Any]], None]] = []
         self._thread: Optional[threading.Thread] = None
         self._queue: queue.Queue = queue.Queue()
+        self._use_simulation = False
 
     def connect(self) -> bool:
         """Connect to Bybit."""
