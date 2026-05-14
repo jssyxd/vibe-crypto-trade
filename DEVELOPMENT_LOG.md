@@ -195,3 +195,33 @@ Next: Fix config.json, then Phase 2 Execution Layer
 
 **Next:** Phase 2 - Execution Layer (Bybit Simnet + OKX Demo)
 
+
+## 2026-05-14 - Backtest Successfully Running!
+
+**Discovery:** Backtest works via Python API, not CLI.
+
+**Solution Found:**
+```bash
+# Direct Python API call works:
+python3 -c "from src.tools.backtest_tool import run_backtest; print(run_backtest('runs/test-btc-backtest'))"
+```
+
+**Backtest Results (20/50 MA Crossover on BTC-USDT):**
+| Metric | Value |
+|--------|-------|
+| Final Value | $99,521.63 |
+| Total Return | -0.48% |
+| Annual Return | -0.35% |
+| Sharpe Ratio | 0.097 |
+| Max Drawdown | -28.31% |
+| Win Rate | 66.67% |
+| Trade Count | 6 trades |
+
+**Note:** Strategy performed poorly (negative return, high drawdown) - this is expected for a simple MA crossover in volatile crypto markets.
+
+**Files Created:**
+- `run_backtest.py` - Simple backtest runner script
+- `runs/test-btc-backtest/` - Test backtest with results
+
+---
+
