@@ -1,0 +1,101 @@
+{
+  "template_name": "rsi_mean_reversion",
+  "max_iterations": 3,
+  "total_iterations": 3,
+  "start_time": "2026-05-14T20:08:47.425714",
+  "end_time": "2026-05-14T20:08:56.739121",
+  "best_result": {
+    "iteration": 1,
+    "passed": false,
+    "score": 0.2857142857142857,
+    "metrics": {
+      "final_value": 83311.83430193632,
+      "total_return": -0.16688165698063673,
+      "annual_return": -0.1254865618547899,
+      "sharpe": -0.6638639097124406,
+      "max_drawdown": -0.3250504851899631,
+      "win_rate": 0.6153846153846154,
+      "trade_count": 13,
+      "profit_factor": 0.5572,
+      "sortino": -0.2959,
+      "calmar": -0.3861
+    },
+    "parameters": {
+      "rsi_period": 14,
+      "oversold": 30,
+      "overbought": 70
+    },
+    "run_dir": "runs/test_optimization/rsi_mean_reversion_iter1"
+  },
+  "all_iterations": [
+    {
+      "iteration": 1,
+      "passed": false,
+      "score": 0.2857142857142857,
+      "metrics": {
+        "final_value": 83311.83430193632,
+        "total_return": -0.16688165698063673,
+        "annual_return": -0.1254865618547899,
+        "sharpe": -0.6638639097124406,
+        "max_drawdown": -0.3250504851899631,
+        "win_rate": 0.6153846153846154,
+        "trade_count": 13,
+        "profit_factor": 0.5572,
+        "sortino": -0.2959,
+        "calmar": -0.3861
+      },
+      "parameters": {
+        "rsi_period": 14,
+        "oversold": 30,
+        "overbought": 70
+      },
+      "error": null
+    },
+    {
+      "iteration": 2,
+      "passed": false,
+      "score": 0.0,
+      "metrics": {
+        "final_value": 83420.82130751453,
+        "total_return": -0.16579178692485463,
+        "annual_return": -0.12464653034765671,
+        "sharpe": -0.4541241928654967,
+        "max_drawdown": -0.22015211276475355,
+        "win_rate": 0.4444444444444444,
+        "trade_count": 9,
+        "profit_factor": 0.3665,
+        "sortino": -0.2327,
+        "calmar": -0.5662
+      },
+      "parameters": {
+        "rsi_period": 30,
+        "oversold": 38,
+        "overbought": 68
+      },
+      "error": null
+    },
+    {
+      "iteration": 3,
+      "passed": false,
+      "score": 0.2857142857142857,
+      "metrics": {
+        "final_value": 85526.14688777071,
+        "total_return": -0.14473853112229296,
+        "annual_return": -0.1084760802128063,
+        "sharpe": -0.4525649656933682,
+        "max_drawdown": -0.25036020061215236,
+        "win_rate": 0.6153846153846154,
+        "trade_count": 13,
+        "profit_factor": 0.66,
+        "sortino": -0.2302,
+        "calmar": -0.4333
+      },
+      "parameters": {
+        "rsi_period": 24,
+        "oversold": 36,
+        "overbought": 68
+      },
+      "error": null
+    }
+  ]
+}
