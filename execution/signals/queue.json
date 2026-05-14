@@ -1,1 +1,118 @@
-[]
+[
+  {
+    "signal_id": "E2E_SIG_001",
+    "timestamp": "2026-05-15T00:07:02.994332",
+    "symbol": "BTC-USDT",
+    "side": "buy",
+    "strategy_name": "E2E_Test_Strategy",
+    "quantity": 0.5,
+    "price": null,
+    "priority": 1,
+    "metadata": null,
+    "status": "pending",
+    "order_id": null,
+    "error": null
+  },
+  {
+    "signal_id": "E2E_Q_SIGNAL_000",
+    "timestamp": "2026-05-15T00:07:03.028737",
+    "symbol": "BTC-USDT",
+    "side": "buy",
+    "strategy_name": "QueueTest",
+    "quantity": 0.1,
+    "price": null,
+    "priority": 1,
+    "metadata": null,
+    "status": "pending",
+    "order_id": null,
+    "error": null
+  },
+  {
+    "signal_id": "E2E_Q_SIGNAL_001",
+    "timestamp": "2026-05-15T00:07:03.028743",
+    "symbol": "BTC-USDT",
+    "side": "buy",
+    "strategy_name": "QueueTest",
+    "quantity": 0.1,
+    "price": null,
+    "priority": 1,
+    "metadata": null,
+    "status": "pending",
+    "order_id": null,
+    "error": null
+  },
+  {
+    "signal_id": "E2E_Q_SIGNAL_002",
+    "timestamp": "2026-05-15T00:07:03.028744",
+    "symbol": "BTC-USDT",
+    "side": "buy",
+    "strategy_name": "QueueTest",
+    "quantity": 0.1,
+    "price": null,
+    "priority": 1,
+    "metadata": null,
+    "status": "pending",
+    "order_id": null,
+    "error": null
+  },
+  {
+    "signal_id": "E2E_CLEAR_000",
+    "timestamp": "2026-05-15T00:07:03.031717",
+    "symbol": "BTC-USDT",
+    "side": "buy",
+    "strategy_name": "ClearTest",
+    "quantity": 0.1,
+    "price": null,
+    "priority": 1,
+    "metadata": null,
+    "status": "pending",
+    "order_id": null,
+    "error": null
+  },
+  {
+    "signal_id": "E2E_CLEAR_001",
+    "timestamp": "2026-05-15T00:07:03.031958",
+    "symbol": "BTC-USDT",
+    "side": "buy",
+    "strategy_name": "ClearTest",
+    "quantity": 0.1,
+    "price": null,
+    "priority": 1,
+    "metadata": null,
+    "status": "pending",
+    "order_id": null,
+    "error": null
+  },
+  {
+    "signal_id": "SESSION_SIG_001",
+    "timestamp": "2026-05-15T00:07:03.049817",
+    "symbol": "BTC-USDT",
+    "side": "buy",
+    "strategy_name": "Momentum_BTC",
+    "quantity": 0.3,
+    "price": null,
+    "priority": 1,
+    "metadata": {
+      "exchange": "bybit"
+    },
+    "status": "pending",
+    "order_id": null,
+    "error": null
+  },
+  {
+    "signal_id": "SESSION_SIG_002",
+    "timestamp": "2026-05-15T00:07:03.049822",
+    "symbol": "ETH-USDT",
+    "side": "buy",
+    "strategy_name": "MA_Cross_ETH",
+    "quantity": 2.0,
+    "price": null,
+    "priority": 1,
+    "metadata": {
+      "exchange": "okx"
+    },
+    "status": "pending",
+    "order_id": null,
+    "error": null
+  }
+]

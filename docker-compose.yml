@@ -1,0 +1,39 @@
+version: '3.8'
+
+services:
+  vct-trading:
+    build: .
+    container_name: vct-trading
+    environment:
+      - PYTHONUNBUFFERED=1
+      - PYTHONDONTWRITEBYTECODE=1
+    env_file:
+      - .env
+    volumes:
+      - ./data:/app/data
+      - ./runs:/app/runs
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "python", "-c", "import requests; requests.get('http://localhost:8000/health')"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+
+  vct-dashboard:
+    build:
+      context: .
+      dockerfile: Dockerfile.dashboard
+    container_name: vct-dashboard
+    ports:
+      - "8501:8501"
+    environment:
+      - PYTHONUNBUFFERED=1
+    env_file:
+      - .env
+    depends_on:
+      - vct-trading
+    restart: unless-stopped
+
+networks:
+  default:
+    name: vct-network
