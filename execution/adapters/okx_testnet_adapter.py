@@ -304,7 +304,9 @@ class OKXTestnetAdapter(BaseAdapter):
         else:
             fill_price = price or current_price
 
-        # Create testnet order
+        # Create testnet order - LIMIT orders start as PENDING, MARKET orders are FILLED
+        initial_status = OrderStatus.PENDING if order_type != OrderType.MARKET else OrderStatus.FILLED
+
         testnet_order = TestnetOrder(
             order_id=order_id,
             symbol=symbol,
@@ -312,9 +314,9 @@ class OKXTestnetAdapter(BaseAdapter):
             order_type=order_type,
             quantity=quantity,
             price=price,
-            status=OrderStatus.FILLED,
-            filled_qty=quantity,
-            avg_fill_price=fill_price,
+            status=initial_status,
+            filled_qty=quantity if order_type == OrderType.MARKET else 0.0,
+            avg_fill_price=fill_price if order_type == OrderType.MARKET else 0.0,
             created_at=datetime.now(),
             updated_at=datetime.now(),
         )
@@ -322,11 +324,10 @@ class OKXTestnetAdapter(BaseAdapter):
         # Store order
         self._orders[order_id] = testnet_order
 
-        # Execute the trade
-        trade = self._execute_trade(symbol, side, quantity, fill_price)
-
-        # Track trade for order
-        self._trades[order_id] = [trade]
+        # Execute MARKET orders immediately
+        if order_type == OrderType.MARKET:
+            trade = self._execute_trade(symbol, side, quantity, fill_price)
+            self._trades[order_id] = [trade]
 
         # Notify callbacks
         for cb in self._order_callbacks:
