@@ -679,6 +679,9 @@ class LiveRiskGuard:
             self._circuit_breaker_triggered_at = None
             self._manual_halt_reason = None
             self._last_risk_event = None
+            # Clear PnL tracking after manual reset to prevent immediate re-trip
+            # User has acknowledged the condition and wants to resume trading
+            self._daily_pnl = 0.0
 
     def get_risk_status(self) -> Dict[str, Any]:
         """Get comprehensive risk status."""

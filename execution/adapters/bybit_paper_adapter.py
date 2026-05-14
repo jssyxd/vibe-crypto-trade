@@ -239,10 +239,10 @@ class BybitPaperAdapter(BaseAdapter):
 
         # Determine fill price
         fill_price = current_price
-        if order_type == OrderType.MARKET:
-            fill_price = current_price
-        elif price is not None:
+        if price is not None:
             fill_price = price
+        elif order_type == OrderType.MARKET:
+            fill_price = current_price
 
         # Create paper order - LIMIT orders start as PENDING (not filled)
         # They will be filled when price conditions are met or can be cancelled

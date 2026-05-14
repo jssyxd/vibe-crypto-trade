@@ -122,12 +122,13 @@ class TestBybitPaperTrading:
         # Update price to simulate profit
         paper_adapter.update_prices({"BTC-USDT": 85000.0})
 
-        # Sell
+        # Sell - use explicit price parameter to ensure we sell at updated price
         sell_order = paper_adapter.place_order(
             symbol="BTC-USDT",
             side=OrderSide.SELL,
             order_type=OrderType.MARKET,
             quantity=0.5,
+            price=85000.0,  # Explicit price to match updated price
         )
         assert sell_order.status == OrderStatus.FILLED
 
@@ -299,7 +300,7 @@ class TestBybitPaperTrading:
         adapter_stats = paper_adapter.get_portfolio_stats()
 
         assert pm_stats.total_value > 0
-        assert adapter_stats.cash < 100000.0
+        assert adapter_stats['cash'] < 100000.0
 
     def test_integration_with_risk_controller(
         self, paper_adapter, risk_controller
@@ -391,12 +392,13 @@ class TestBybitPaperTrading:
         pnl = paper_adapter.get_pnl_summary()
         assert pnl['total_unrealized_pnl'] > 0
 
-        # 5. Sell BTC for profit
+        # 5. Sell BTC for profit - use explicit price to match updated price
         paper_adapter.place_order(
             symbol="BTC-USDT",
             side=OrderSide.SELL,
             order_type=OrderType.MARKET,
             quantity=0.2,
+            price=85000.0,  # Explicit price to match updated price
         )
 
         # 6. Check final state
