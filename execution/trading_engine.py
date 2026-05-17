@@ -932,6 +932,47 @@ class TradingEngine:
         """Clear processed signals older than specified hours."""
         self.signal_queue.clear_processed(before_hours=before_hours)
 
+    # ==================== Exchange Access (for API) ====================
+
+    @property
+    def adapters(self) -> Dict[str, BaseAdapter]:
+        """Get adapters dict for API access (backward compatibility)."""
+        return {str(k.value): v for k, v in self._adapters.items()}
+
+    def get_default_exchange(self) -> Optional[BaseAdapter]:
+        """Get the default exchange adapter."""
+        if "bybit" in self._adapters:
+            return self._adapters["bybit"]
+        if "okx" in self._adapters:
+            return self._adapters["okx"]
+        # Also check by Exchange enum value
+        for exchange in Exchange:
+            if exchange in self._adapters:
+                return self._adapters[exchange]
+        return None
+
+    def get_exchange(self, name: str) -> Optional[BaseAdapter]:
+        """Get exchange adapter by name."""
+        name_lower = name.lower()
+        # Check direct key match
+        if name_lower in self._adapters:
+            return self._adapters[name_lower]
+        # Check by Exchange enum
+        for exchange in Exchange:
+            if exchange.value == name_lower and exchange in self._adapters:
+                return self._adapters[exchange]
+        return None
+
+    def get_all_positions(self) -> List[Position]:
+        """Get all positions from all exchanges via adapters."""
+        positions = []
+        for adapter in self._adapters.values():
+            try:
+                positions.extend(adapter.get_all_positions())
+            except Exception:
+                pass  # Skip adapters that fail
+        return positions
+
     # ==================== Shutdown ====================
 
     def shutdown(self) -> None:
