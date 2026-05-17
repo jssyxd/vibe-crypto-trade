@@ -153,6 +153,9 @@ class TradingEngine:
             'total_realized_pnl': 0.0,
         }
 
+        # API server thread
+        self._api_thread: Optional[threading.Thread] = None
+
     def register_adapter(self, exchange: Exchange, adapter: BaseAdapter) -> None:
         """
         Register an exchange adapter.
@@ -932,6 +935,31 @@ class TradingEngine:
         """Clear processed signals older than specified hours."""
         self.signal_queue.clear_processed(before_hours=before_hours)
 
+    # ==================== API Server ====================
+
+    def start_api(self, host: str = "127.0.0.1", port: int = 8502) -> None:
+        """Start the FastAPI server in a background thread."""
+        from execution.api import router
+        from execution.api.dependencies import set_trading_engine
+
+        set_trading_engine(self)
+
+        from fastapi import FastAPI
+        app = FastAPI(title="Vibe-Crypto-Trading API")
+        app.include_router(router)
+
+        def run():
+            import uvicorn
+            uvicorn.run(app, host=host, port=port, log_level="warning")
+
+        self._api_thread = threading.Thread(target=run, daemon=True)
+        self._api_thread.start()
+        print(f"API server started at http://{host}:{port}")
+
+    def stop_api(self) -> None:
+        """Stop the API server."""
+        self._api_server = None
+
     # ==================== Exchange Access (for API) ====================
 
     @property
@@ -985,3 +1013,24 @@ class TradingEngine:
                     print(f"Error disconnecting {exchange.value}: {e}")
 
             self._adapters.clear()
+
+
+if __name__ == "__main__":
+    import argparse
+
+    parser = argparse.ArgumentParser(description="Vibe-Crypto-Trading Engine")
+    parser.add_argument("--api", action="store_true", help="Start API server")
+    parser.add_argument("--port", type=int, default=8502, help="API server port")
+    args = parser.parse_args()
+
+    engine = TradingEngine()
+    if args.api:
+        engine.start_api(port=args.port)
+        print("Press Ctrl+C to stop")
+        try:
+            import time
+            while True:
+                time.sleep(1)
+        except KeyboardInterrupt:
+            print("Shutting down...")
+            engine.stop_api()
