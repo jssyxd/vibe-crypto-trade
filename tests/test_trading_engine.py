@@ -447,6 +447,9 @@ class TestPositionUpdates:
             'bid': 44990.0,
             'ask': 45010.0,
         }
+        adapter.get_all_positions.return_value = [
+            Position(symbol="BTC-USDT", quantity=0.5, entry_price=45000.0, current_price=45000.0, unrealized_pnl=0.0)
+        ]
         return adapter
 
     @pytest.fixture
@@ -498,8 +501,13 @@ class TestPositionUpdates:
         engine.handle_fill(fill)
 
         positions = engine.get_all_positions()
-        assert 'bybit' in positions
-        assert 'BTC-USDT' in positions['bybit']
+        # get_all_positions() returns List[Position]
+        assert isinstance(positions, list)
+        assert len(positions) >= 1
+        # Find position for BTC-USDT
+        btc_positions = [p for p in positions if p.symbol == "BTC-USDT"]
+        assert len(btc_positions) >= 1
+        assert btc_positions[0].quantity == 0.5
 
 
 class TestPortfolioUpdates:
